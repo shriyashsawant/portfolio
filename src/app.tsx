@@ -46,7 +46,7 @@ const experiences = [
   },
 
   {
-    title: 'AI-Powered Species Identification Web App',
+    title: 'Artificial Intelligence and Data Analysis',
     company: 'Edunet and Shell',
     period: 'July 2025 – Aug 2025',
     tag: 'COMPLETED',
@@ -56,7 +56,7 @@ const experiences = [
       'Streamlined the user journey from image upload to AI-driven identification with a focus on low latency',
     ],
   },
-  
+
   {
     title: 'Tech Support Intern',
     company: 'Bynry Inc.',
