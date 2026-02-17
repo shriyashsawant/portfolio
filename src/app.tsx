@@ -34,6 +34,17 @@ const skills = [
 
 const experiences = [
   {
+    title: 'AI-Powered Species Identification Web App',
+    company: 'AI and Data Analytics by Edunet and Shell',
+    period: '2024',
+    tag: 'COMPLETED',
+    points: [
+      'Built a high-performance classification tool using React, Vite, and TypeScript',
+      'Integrated Supabase for secure image storage and backend data management',
+      'Streamlined the user journey from image upload to AI-driven identification with a focus on low latency',
+    ],
+  },
+  {
     title: 'Software Engineer Intern',
     company: 'GoBasera',
     period: 'Sep 2025 – Present',
