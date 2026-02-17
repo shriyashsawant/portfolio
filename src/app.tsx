@@ -33,21 +33,10 @@ const skills = [
 ];
 
 const experiences = [
-  {
-    title: 'AI-Powered Species Identification Web App',
-    company: 'AI and Data Analytics by Edunet and Shell',
-    period: '2024',
-    tag: 'COMPLETED',
-    points: [
-      'Built a high-performance classification tool using React, Vite, and TypeScript',
-      'Integrated Supabase for secure image storage and backend data management',
-      'Streamlined the user journey from image upload to AI-driven identification with a focus on low latency',
-    ],
-  },
-  {
+    {
     title: 'Software Engineer Intern',
     company: 'GoBasera',
-    period: 'Sep 2025 – Present',
+    period: 'Sep 2025 – Nov 2025',
     tag: 'ACTIVE MISSION',
     points: [
       'Building live SaaS platform features with React & PostgreSQL',
@@ -55,6 +44,19 @@ const experiences = [
       'Extreme Programming: pair coding, code reviews, Kanban flow',
     ],
   },
+
+  {
+    title: 'AI-Powered Species Identification Web App',
+    company: 'Edunet and Shell',
+    period: 'July 2025 – Aug 2025',
+    tag: 'COMPLETED',
+    points: [
+      'Built a high-performance classification tool using React, Vite, and TypeScript',
+      'Integrated Supabase for secure image storage and backend data management',
+      'Streamlined the user journey from image upload to AI-driven identification with a focus on low latency',
+    ],
+  },
+  
   {
     title: 'Tech Support Intern',
     company: 'Bynry Inc.',
