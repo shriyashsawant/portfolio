@@ -1,6 +1,8 @@
 import { Component, useEffect, useRef, useState } from 'react';
 import type { ErrorInfo, ReactNode } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Scene3DComponent from './components/Scene3D';
+import CursorParticles from './components/CursorParticles';
 
 /* ─── Error Boundary ─── */
 class ErrorBoundary extends Component<{ children: ReactNode; fallback?: ReactNode }, { hasError: boolean }> {
@@ -71,6 +73,7 @@ const projects = [
     desc: 'End-to-end AI system integrating vehicle diagnostics with real-time Computer Vision (OpenCV). React/NestJS dashboard for hands-free vehicle telemetry. Backend with Docker + AWS for scalable data processing.',
     tech: ['React', 'NestJS', 'OpenCV', 'Docker', 'AWS'],
     color: '#00ff88',
+    image: '/images/project-drivesmarter.png',
   },
   {
     title: 'DevOps Chatbot',
@@ -78,6 +81,7 @@ const projects = [
     desc: 'Slack-integrated Jenkins automation for health checks, logs, and service restarts. Docker-deployed with automated CI/CD pipelines for streamlined system maintenance.',
     tech: ['Slack API', 'Jenkins', 'Docker', 'CI/CD'],
     color: '#00d4ff',
+    image: '/images/project-devops-chatbot.png',
   },
   {
     title: 'Event Portal',
@@ -85,6 +89,7 @@ const projects = [
     desc: 'Serverless AWS Amplify backend with S3 for secure image uploads and API Gateway. Full infrastructure management with scalable cloud architecture.',
     tech: ['AWS Amplify', 'S3', 'API Gateway', 'Serverless'],
     color: '#ff00ff',
+    image: '/images/project-event-portal.png',
   },
 ];
 
@@ -195,8 +200,18 @@ function Navbar() {
     { label: 'SKILLS', href: '#skills' },
     { label: 'XP', href: '#experience' },
     { label: 'PROJECTS', href: '#projects' },
+    { label: 'CERTS', href: '#certifications' },
     { label: 'CONTACT', href: '#contact' },
   ];
+
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setMobileOpen(false);
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-void/90 backdrop-blur-md border-b border-neon-green/10' : ''}`}>
@@ -209,6 +224,7 @@ function Navbar() {
             <a
               key={l.label}
               href={l.href}
+              onClick={(e) => handleSmoothScroll(e, l.href)}
               className="font-heading text-xs tracking-wider text-white/60 hover:text-neon-green transition-colors relative group"
             >
               {l.label}
@@ -230,7 +246,7 @@ function Navbar() {
               key={l.label}
               href={l.href}
               className="block font-heading text-sm tracking-wider text-white/70 hover:text-neon-green transition-colors"
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => handleSmoothScroll(e, l.href)}
             >
               {'> '}{l.label}
             </a>
@@ -458,43 +474,118 @@ function ExperienceSection() {
   );
 }
 
+/* ─── Framer Motion Variants ─── */
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay: i * 0.15,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  }),
+};
+
+const certVariants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      delay: i * 0.1,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  }),
+};
+
 /* ─── Projects Section ─── */
 function ProjectsSection() {
   return (
     <section id="projects" className="relative z-10 py-24 px-4">
       <div className="max-w-5xl mx-auto">
         <RevealSection>
-          <div className="font-mono text-neon-green/50 text-xs mb-2 tracking-wider">{'// 04'}</div>
-          <h3 className="font-heading text-3xl tablet:text-4xl text-white font-bold tracking-wider mb-2">
-            BUILD<span className="text-neon-green">_</span>LOG
-          </h3>
-          <p className="font-mono text-xs text-neon-cyan/50 mb-10">KEY PROJECTS</p>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={sectionVariants}
+          >
+            <div className="font-mono text-neon-green/50 text-xs mb-2 tracking-wider">{'// 04'}</div>
+            <h3 className="font-heading text-3xl tablet:text-4xl text-white font-bold tracking-wider mb-2">
+              BUILD<span className="text-neon-green">_</span>LOG
+            </h3>
+            <p className="font-mono text-xs text-neon-cyan/50 mb-10">KEY PROJECTS</p>
+          </motion.div>
         </RevealSection>
 
         <div className="grid tablet:grid-cols-2 desktop:grid-cols-3 gap-6">
-          {projects.map((proj) => (
-            <RevealSection key={proj.title}>
+          {projects.map((proj, idx) => (
+            <motion.div
+              key={proj.title}
+              custom={idx}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={cardVariants}
+              whileHover={{
+                y: -8,
+                transition: { duration: 0.3 },
+              }}
+            >
               <div
-                className="neon-border bg-hud-card rounded-lg p-6 h-full card-3d group hover:shadow-neon transition-all duration-500"
+                className="neon-border bg-hud-card rounded-lg overflow-hidden h-full card-3d group hover:shadow-neon transition-all duration-500"
                 style={{ borderColor: `${proj.color}20` }}
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color, boxShadow: `0 0 8px ${proj.color}` }} />
-                  <span className="font-mono text-[10px] tracking-wider" style={{ color: `${proj.color}99` }}>{proj.subtitle.toUpperCase()}</span>
+                {/* Project Image */}
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src={proj.image}
+                    alt={proj.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-80"
+                  />
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500"
+                    style={{ background: `linear-gradient(135deg, ${proj.color}20, transparent)` }}
+                  />
+                  {/* Scan line overlay on image */}
+                  <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)] pointer-events-none" />
                 </div>
-                <h4 className="font-heading text-xl tracking-wider text-white mb-3 group-hover:text-neon-green transition-colors">
-                  {proj.title}
-                </h4>
-                <p className="font-body text-sm text-white/50 leading-relaxed mb-4">{proj.desc}</p>
-                <div className="flex flex-wrap gap-1.5 mt-auto">
-                  {proj.tech.map((t) => (
-                    <span key={t} className="font-mono text-[10px] px-2 py-0.5 rounded bg-void-200 text-white/40 border border-white/5">
-                      {t}
-                    </span>
-                  ))}
+
+                <div className="p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color, boxShadow: `0 0 8px ${proj.color}` }} />
+                    <span className="font-mono text-[10px] tracking-wider" style={{ color: `${proj.color}99` }}>{proj.subtitle.toUpperCase()}</span>
+                  </div>
+                  <h4 className="font-heading text-xl tracking-wider text-white mb-3 group-hover:text-neon-green transition-colors">
+                    {proj.title}
+                  </h4>
+                  <p className="font-body text-sm text-white/50 leading-relaxed mb-4">{proj.desc}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-auto">
+                    {proj.tech.map((t) => (
+                      <span key={t} className="font-mono text-[10px] px-2 py-0.5 rounded bg-void-200 text-white/40 border border-white/5">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </RevealSection>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -505,24 +596,43 @@ function ProjectsSection() {
 /* ─── Certifications Section ─── */
 function CertificationsSection() {
   return (
-    <section className="relative z-10 py-16 px-4">
+    <section id="certifications" className="relative z-10 py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <RevealSection>
-          <div className="font-mono text-neon-green/50 text-xs mb-2 tracking-wider">{'// 05'}</div>
-          <h3 className="font-heading text-3xl tablet:text-4xl text-white font-bold tracking-wider mb-8">
-            ACHIEVEMENTS<span className="text-neon-green">_</span>UNLOCKED
-          </h3>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={sectionVariants}
+          >
+            <div className="font-mono text-neon-green/50 text-xs mb-2 tracking-wider">{'// 05'}</div>
+            <h3 className="font-heading text-3xl tablet:text-4xl text-white font-bold tracking-wider mb-8">
+              ACHIEVEMENTS<span className="text-neon-green">_</span>UNLOCKED
+            </h3>
+          </motion.div>
         </RevealSection>
-        <RevealSection>
-          <div className="grid tablet:grid-cols-2 gap-3">
-            {certifications.map((cert, idx) => (
-              <div key={idx} className="neon-border bg-hud-card rounded-lg p-4 flex items-center gap-3 hover:bg-void-200 transition-colors">
-                <div className="font-heading text-lg text-neon-green">✦</div>
+        <div className="grid tablet:grid-cols-2 gap-3">
+          {certifications.map((cert, idx) => (
+            <motion.div
+              key={idx}
+              custom={idx}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={certVariants}
+              whileHover={{
+                scale: 1.02,
+                x: 5,
+                transition: { duration: 0.2 },
+              }}
+            >
+              <div className="neon-border bg-hud-card rounded-lg p-4 flex items-center gap-3 hover:bg-void-200 hover:border-neon-green/30 transition-all duration-300 cursor-default">
+                <div className="font-heading text-lg text-neon-green animate-pulse-neon">✦</div>
                 <span className="font-body text-sm text-white/70">{cert}</span>
               </div>
-            ))}
-          </div>
-        </RevealSection>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -630,19 +740,27 @@ function App() {
 
       {!loading && (
         <>
+          <CursorParticles />
           <ErrorBoundary>
             <Scene3DComponent />
           </ErrorBoundary>
           <Navbar />
-          <main className="relative z-10">
-            <HeroSection />
-            <AboutSection />
-            <SkillsSection />
-            <ExperienceSection />
-            <ProjectsSection />
-            <CertificationsSection />
-            <ContactSection />
-          </main>
+          <AnimatePresence>
+            <motion.main
+              className="relative z-10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              <HeroSection />
+              <AboutSection />
+              <SkillsSection />
+              <ExperienceSection />
+              <ProjectsSection />
+              <CertificationsSection />
+              <ContactSection />
+            </motion.main>
+          </AnimatePresence>
           <Footer />
         </>
       )}
