@@ -525,9 +525,15 @@ function ExperienceSection() {
                   {/* Node */}
                   <div className="absolute left-2.5 tablet:left-4.5 top-2 w-3 h-3 rounded-full border-2 border-neon-green bg-void shadow-neon" />
 
-                  <div 
-                    className="neon-border hud-corners bg-hud-card rounded-lg p-5 card-3d cursor-pointer hover:border-neon-green/50 transition-all"
+                  <motion.div 
+                    className={`neon-border hud-corners bg-hud-card rounded-lg p-5 cursor-pointer transition-all ${expandedMission === idx ? 'shadow-neon scale-[1.02]' : 'card-3d hover:border-neon-green/50'}`}
                     onClick={() => toggleMission(idx)}
+                    initial={false}
+                    animate={{ 
+                      scale: expandedMission === idx ? 1.02 : 1,
+                      borderColor: expandedMission === idx ? 'rgba(0, 255, 136, 0.5)' : 'rgba(0, 255, 136, 0.2)'
+                    }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     <div className="flex flex-wrap items-center gap-3 mb-3">
                       <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-neon-green/10 text-neon-green border border-neon-green/20">
@@ -612,7 +618,7 @@ function ExperienceSection() {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
                 </div>
               </RevealSection>
             ))}
