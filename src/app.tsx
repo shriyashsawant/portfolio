@@ -483,7 +483,7 @@ function SkillsSection() {
             <h4 className="font-heading text-sm tracking-wider text-neon-green mb-4">TECH_INVENTORY</h4>
             <div className="flex flex-wrap gap-2">
               {['Java/JEE', 'Spring Boot', 'React', 'Node.js', 'AWS', 'Docker', 'Jenkins', 'PostgreSQL', 'MongoDB', 'TypeScript', 'Hibernate', 'REST APIs', 'Microservices', 'GitHub Actions', 'Nginx', 'Tailwind CSS'].map((t) => (
-                <span key={t} className="font-mono text-xs px-3 py-1.5 rounded bg-void-200 text-neon-cyan/70 border border-neon-cyan/10 hover:border-neon-cyan/30 hover:text-neon-cyan transition-all cursor-default">
+                <span key={t} className="skill-glitch font-mono text-xs px-3 py-1.5 rounded bg-void-200 text-neon-cyan/70 border border-neon-cyan/10 hover:border-neon-cyan/30 hover:text-neon-cyan transition-all cursor-default">
                   {t}
                 </span>
               ))}
@@ -502,6 +502,9 @@ function ExperienceSection() {
   const toggleMission = (idx: number) => {
     setExpandedMission(expandedMission === idx ? null : idx);
   };
+
+  // Get current expanded mission data
+  const currentMission = expandedMission !== null ? experiences[expandedMission] : null;
 
   return (
     <section id="experience" className="relative z-10 py-24 px-4">
@@ -525,15 +528,9 @@ function ExperienceSection() {
                   {/* Node */}
                   <div className="absolute left-2.5 tablet:left-4.5 top-2 w-3 h-3 rounded-full border-2 border-neon-green bg-void shadow-neon" />
 
-                  <motion.div 
-                    className={`neon-border hud-corners bg-hud-card rounded-lg p-5 cursor-pointer transition-all ${expandedMission === idx ? 'shadow-neon scale-[1.02]' : 'card-3d hover:border-neon-green/50'}`}
+                  <div 
+                    className="neon-border hud-corners bg-hud-card rounded-lg p-5 cursor-pointer card-3d hover:border-neon-green/50 transition-all"
                     onClick={() => toggleMission(idx)}
-                    initial={false}
-                    animate={{ 
-                      scale: expandedMission === idx ? 1.02 : 1,
-                      borderColor: expandedMission === idx ? 'rgba(0, 255, 136, 0.5)' : 'rgba(0, 255, 136, 0.2)'
-                    }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
                   >
                     <div className="flex flex-wrap items-center gap-3 mb-3">
                       <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-neon-green/10 text-neon-green border border-neon-green/20">
@@ -541,7 +538,7 @@ function ExperienceSection() {
                       </span>
                       <span className="font-mono text-xs text-white/40">{exp.period}</span>
                       <span className="font-mono text-xs text-neon-cyan/50 ml-auto">
-                        [{expandedMission === idx ? 'CLOSE' : 'VIEW'} MISSION]
+                        [VIEW MISSION]
                       </span>
                     </div>
                     <h4 className="font-heading text-lg tracking-wider text-white mb-1">{exp.title}</h4>
@@ -556,75 +553,97 @@ function ExperienceSection() {
                         </li>
                       ))}
                     </ul>
-
-                    {/* Expanded Mission Details */}
-                    <AnimatePresence>
-                      {expandedMission === idx && exp.missionDetails && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="mt-6 pt-4 border-t border-neon-green/20 overflow-hidden"
-                        >
-                          <div className="bg-void/50 rounded-lg p-4">
-                            <h5 className="font-heading text-sm tracking-wider text-neon-green mb-4">
-                              MISSION INTEL: {exp.company.toUpperCase()}
-                            </h5>
-                            
-                            <div className="grid tablet:grid-cols-2 gap-4 mb-4">
-                              <div>
-                                <span className="font-mono text-xs text-white/40">ROLE:</span>
-                                <p className="font-body text-sm text-white/80">{exp.title}</p>
-                              </div>
-                              <div>
-                                <span className="font-mono text-xs text-white/40">TIMELINE:</span>
-                                <p className="font-body text-sm text-white/80">{exp.period}</p>
-                              </div>
-                            </div>
-
-                            <div className="mb-4">
-                              <span className="font-mono text-xs text-neon-cyan/70 block mb-2">DETAILED MISSION OBJECTIVES:</span>
-                              <ul className="space-y-2">
-                                {exp.missionDetails.map((detail: string, i: number) => (
-                                  <li key={i} className="font-body text-xs text-white/60 flex gap-2">
-                                    <span className="text-neon-cyan/60 mt-0.5">▸</span>
-                                    <span>{detail}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-
-                            {exp.skills && (
-                              <div>
-                                <span className="font-mono text-xs text-neon-green/70 block mb-2">SKILLS MASTERED (TECH STACK):</span>
-                                <div className="grid tablet:grid-cols-2 gap-2">
-                                  {exp.skills.map((skillGroup, i: number) => (
-                                    <div key={i} className="flex items-start gap-2">
-                                      <span className="font-mono text-[10px] text-neon-green/60 min-w-[80px]">{skillGroup.category}:</span>
-                                      <div className="flex flex-wrap gap-1">
-                                        {skillGroup.tech.map((tech: string, j: number) => (
-                                          <span key={j} className="font-mono text-[10px] px-2 py-0.5 rounded bg-void-200 text-white/50 border border-white/5">
-                                            {tech}
-                                          </span>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+                  </div>
                 </div>
               </RevealSection>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Modal Overlay for Mission Details */}
+      <AnimatePresence>
+        {expandedMission !== null && currentMission && (
+          <motion.div 
+            className="mission-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setExpandedMission(null)}
+          >
+            <motion.div 
+              className="mission-details-expanded"
+              initial={{ opacity: 0, scale: 0.5, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5, y: 50 }}
+              transition={{ duration: 0.4, ease: [0.175, 0.885, 0.32, 1.275] }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Terminal Header */}
+              <div className="terminal-header">
+                <span>STRATEGIC_INTEL_LOADED</span>
+                <button onClick={() => setExpandedMission(null)}>X</button>
+              </div>
+
+              {/* Mission Content */}
+              <h5 className="font-heading text-sm tracking-wider text-neon-green mb-4">
+                MISSION INTEL: {currentMission.company.toUpperCase()}
+              </h5>
+              
+              <div className="grid tablet:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <span className="font-mono text-xs text-white/40">ROLE:</span>
+                  <p className="font-body text-sm text-white/80">{currentMission.title}</p>
+                </div>
+                <div>
+                  <span className="font-mono text-xs text-white/40">TIMELINE:</span>
+                  <p className="font-body text-sm text-white/80">{currentMission.period}</p>
+                </div>
+              </div>
+
+              {currentMission.missionDetails && (
+                <div className="mb-4">
+                  <span className="font-mono text-xs text-neon-cyan/70 block mb-2">MISSION OBJECTIVES:</span>
+                  <ul className="space-y-2">
+                    {currentMission.missionDetails.map((detail: string, i: number) => (
+                      <li key={i} className="font-body text-xs text-white/60 flex gap-2">
+                        <span className="text-neon-cyan/60 mt-0.5">▸</span>
+                        <span>{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {currentMission.skills && (
+                <div>
+                  <span className="font-mono text-xs text-neon-green/70 block mb-2">ACQUIRED TECH & SKILLS:</span>
+                  <div className="grid tablet:grid-cols-2 gap-2">
+                    {currentMission.skills.map((skillGroup, i: number) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <span className="font-mono text-[10px] text-neon-green/60 min-w-[80px]">{skillGroup.category}:</span>
+                        <div className="flex flex-wrap gap-1">
+                          {skillGroup.tech.map((tech: string, j: number) => (
+                            <span key={j} className="skill-glitch font-mono text-[10px] px-2 py-0.5 rounded bg-void-200 text-white/50 border border-white/5">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Mission Footer */}
+              <div className="mission-footer">
+                <span className="flashing-cursor">_</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
