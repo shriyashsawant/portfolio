@@ -36,6 +36,7 @@ const experiences = [
     {
     title: 'Software Engineer Intern',
     company: 'GoBasera',
+    link: 'https://gobasera.com/',
     period: 'Sep 2025 – Nov 2025',
     tag: 'ACTIVE MISSION',
     points: [
@@ -48,6 +49,7 @@ const experiences = [
   {
     title: 'Artificial Intelligence and Data Analysis',
     company: 'Edunet and Shell',
+    link: 'https://edunetfoundation.org/',
     period: 'July 2025 – Aug 2025',
     tag: 'COMPLETED',
     points: [
@@ -60,6 +62,7 @@ const experiences = [
   {
     title: 'Tech Support Intern',
     company: 'Bynry Inc.',
+    link: 'https://www.bynry.com/',
     period: 'Jul 2025 – Aug 2025',
     tag: 'COMPLETED',
     points: [
@@ -70,6 +73,7 @@ const experiences = [
   {
     title: 'Full Stack Developer Intern',
     company: 'Bharat Intern',
+    link: 'https://bharatinternship.com/',
     period: 'Feb 2024 – Mar 2024',
     tag: 'COMPLETED',
     points: [
@@ -83,6 +87,7 @@ const projects = [
   {
     title: 'DriveSmarter',
     subtitle: 'AI Vehicle Co-Pilot',
+    link: 'https://github.com/shriyashsawant/CodeName-Chariot',
     desc: 'End-to-end AI system integrating vehicle diagnostics with real-time Computer Vision (OpenCV). React/NestJS dashboard for hands-free vehicle telemetry. Backend with Docker + AWS for scalable data processing.',
     tech: ['React', 'NestJS', 'OpenCV', 'Docker', 'AWS'],
     color: '#00ff88',
@@ -91,6 +96,7 @@ const projects = [
   {
     title: 'DevOps Chatbot',
     subtitle: 'Automated Infrastructure',
+    link: 'https://github.com/shriyashsawant/devops-chatbot-java',
     desc: 'Slack-integrated Jenkins automation for health checks, logs, and service restarts. Docker-deployed with automated CI/CD pipelines for streamlined system maintenance.',
     tech: ['Slack API', 'Jenkins', 'Docker', 'CI/CD'],
     color: '#00d4ff',
@@ -99,6 +105,7 @@ const projects = [
   {
     title: 'Event Portal',
     subtitle: 'Serverless Management',
+    link: 'https://github.com/shriyashsawant/Event_Managment_Portal',
     desc: 'Serverless AWS Amplify backend with S3 for secure image uploads and API Gateway. Full infrastructure management with scalable cloud architecture.',
     tech: ['AWS Amplify', 'S3', 'API Gateway', 'Serverless'],
     color: '#ff00ff',
@@ -467,7 +474,9 @@ function ExperienceSection() {
                       <span className="font-mono text-xs text-white/40">{exp.period}</span>
                     </div>
                     <h4 className="font-heading text-lg tracking-wider text-white mb-1">{exp.title}</h4>
-                    <div className="font-mono text-sm text-neon-cyan/70 mb-3">@ {exp.company}</div>
+                    <a href={exp.link} target="_blank" rel="noopener noreferrer" className="font-mono text-sm text-neon-cyan/70 mb-3 hover:text-neon-green hover:underline">
+                      @ {exp.company}
+                    </a>
                     <ul className="space-y-2">
                       {exp.points.map((p, i) => (
                         <li key={i} className="font-body text-sm text-white/60 flex gap-2">
@@ -585,9 +594,11 @@ function ProjectsSection() {
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color, boxShadow: `0 0 8px ${proj.color}` }} />
                     <span className="font-mono text-[10px] tracking-wider" style={{ color: `${proj.color}99` }}>{proj.subtitle.toUpperCase()}</span>
                   </div>
-                  <h4 className="font-heading text-xl tracking-wider text-white mb-3 group-hover:text-neon-green transition-colors">
-                    {proj.title}
-                  </h4>
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer" className="block">
+                    <h4 className="font-heading text-xl tracking-wider text-white mb-3 group-hover:text-neon-green transition-colors">
+                      {proj.title}
+                    </h4>
+                  </a>
                   <p className="font-body text-sm text-white/50 leading-relaxed mb-4">{proj.desc}</p>
                   <div className="flex flex-wrap gap-1.5 mt-auto">
                     {proj.tech.map((t) => (
