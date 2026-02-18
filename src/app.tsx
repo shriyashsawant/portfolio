@@ -44,6 +44,20 @@ const experiences = [
       '80%+ test coverage using TDD & enterprise QA standards',
       'Extreme Programming: pair coding, code reviews, Kanban flow',
     ],
+    missionDetails: [
+      'Contributed to the design, development, and deployment of live platform features using React and NestJS',
+      'Architected and implemented Razorpay payment gateways to handle secure SaaS transactions',
+      'Maintained a strict 80%+ test coverage standard using Test-Driven Development (TDD)',
+      'Conducted multi-layer testing, including Unit, Integration, and E2E testing with Playwright',
+      'Automated workflows using GitHub Actions and CI/CD pipelines for seamless deployments',
+    ],
+    skills: [
+      { category: 'Frontend', tech: ['React', 'React Native', 'TypeScript'] },
+      { category: 'Backend', tech: ['NestJS', 'PostgreSQL', 'REST APIs'] },
+      { category: 'Testing', tech: ['Playwright', 'TDD', 'Jest'] },
+      { category: 'DevOps', tech: ['Docker', 'GitHub Actions', 'CI/CD'] },
+      { category: 'Workflow', tech: ['Pair Programming', 'Code Reviews', 'Kanban'] },
+    ],
   },
 
   {
@@ -57,6 +71,19 @@ const experiences = [
       'Integrated Supabase for secure image storage and backend data management',
       'Streamlined the user journey from image upload to AI-driven identification with a focus on low latency',
     ],
+    missionDetails: [
+      'Built a high-performance classification tool using React, Vite, and TypeScript',
+      'Integrated Supabase for secure image storage and backend data management',
+      'Streamlined the user journey from image upload to AI-driven identification with a focus on low latency',
+      'Developed machine learning models for data classification and prediction',
+      'Collaborated with the team to optimize model performance and accuracy',
+    ],
+    skills: [
+      { category: 'Frontend', tech: ['React', 'Vite', 'TypeScript'] },
+      { category: 'Backend', tech: ['Supabase', 'Node.js', 'REST APIs'] },
+      { category: 'AI/ML', tech: ['Machine Learning', 'Data Analysis', 'Python'] },
+      { category: 'Tools', tech: ['Git', 'VS Code', 'Jupyter'] },
+    ],
   },
 
   {
@@ -69,6 +96,19 @@ const experiences = [
       'API testing & Root Cause Analysis with QA teams',
       'AWS & Jenkins automation for data migration & incident mgmt',
     ],
+    missionDetails: [
+      'Conducted API testing and Root Cause Analysis in collaboration with QA teams',
+      'Automated data migration processes using AWS services',
+      'Implemented Jenkins automation for incident management and resolution',
+      'Monitored system health and performance metrics',
+      'Created documentation for support procedures and troubleshooting guides',
+    ],
+    skills: [
+      { category: 'Cloud', tech: ['AWS', 'EC2', 'S3'] },
+      { category: 'DevOps', tech: ['Jenkins', 'Docker', 'CI/CD'] },
+      { category: 'Testing', tech: ['API Testing', 'Postman', 'Selenium'] },
+      { category: 'Support', tech: ['Troubleshooting', 'Documentation', 'RCA'] },
+    ],
   },
   {
     title: 'Full Stack Developer Intern',
@@ -79,6 +119,19 @@ const experiences = [
     points: [
       'Delivered expense tracker & signup systems (Node.js + MongoDB)',
       'Optimized API response times & secure auth flows',
+    ],
+    missionDetails: [
+      'Delivered a fully functional expense tracker application using Node.js and MongoDB',
+      'Implemented secure authentication flows with JWT and bcrypt',
+      'Optimized API response times through efficient database queries and indexing',
+      'Designed and developed user signup and login systems',
+      'Collaborated with mentors to follow best practices in code structure',
+    ],
+    skills: [
+      { category: 'Frontend', tech: ['HTML', 'CSS', 'JavaScript'] },
+      { category: 'Backend', tech: ['Node.js', 'Express', 'MongoDB'] },
+      { category: 'Authentication', tech: ['JWT', 'Bcrypt', 'OAuth'] },
+      { category: 'Tools', tech: ['Git', 'Postman', 'MongoDB Atlas'] },
     ],
   },
 ];
@@ -444,6 +497,12 @@ function SkillsSection() {
 
 /* ─── Experience Section ─── */
 function ExperienceSection() {
+  const [expandedMission, setExpandedMission] = useState<number | null>(null);
+
+  const toggleMission = (idx: number) => {
+    setExpandedMission(expandedMission === idx ? null : idx);
+  };
+
   return (
     <section id="experience" className="relative z-10 py-24 px-4">
       <div className="max-w-4xl mx-auto">
@@ -466,25 +525,93 @@ function ExperienceSection() {
                   {/* Node */}
                   <div className="absolute left-2.5 tablet:left-4.5 top-2 w-3 h-3 rounded-full border-2 border-neon-green bg-void shadow-neon" />
 
-                  <div className="neon-border hud-corners bg-hud-card rounded-lg p-5 card-3d">
+                  <div 
+                    className="neon-border hud-corners bg-hud-card rounded-lg p-5 card-3d cursor-pointer hover:border-neon-green/50 transition-all"
+                    onClick={() => toggleMission(idx)}
+                  >
                     <div className="flex flex-wrap items-center gap-3 mb-3">
                       <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-neon-green/10 text-neon-green border border-neon-green/20">
                         {exp.tag}
                       </span>
                       <span className="font-mono text-xs text-white/40">{exp.period}</span>
+                      <span className="font-mono text-xs text-neon-cyan/50 ml-auto">
+                        [{expandedMission === idx ? 'CLOSE' : 'VIEW'} MISSION]
+                      </span>
                     </div>
                     <h4 className="font-heading text-lg tracking-wider text-white mb-1">{exp.title}</h4>
                     <a href={exp.link} target="_blank" rel="noopener noreferrer" className="font-mono text-sm text-neon-cyan/70 mb-3 hover:text-neon-green hover:underline">
                       @ {exp.company}
                     </a>
                     <ul className="space-y-2">
-                      {exp.points.map((p, i) => (
+                      {exp.points.map((p: string, i: number) => (
                         <li key={i} className="font-body text-sm text-white/60 flex gap-2">
                           <span className="text-neon-green/60 mt-0.5">▸</span>
                           <span>{p}</span>
                         </li>
                       ))}
                     </ul>
+
+                    {/* Expanded Mission Details */}
+                    <AnimatePresence>
+                      {expandedMission === idx && exp.missionDetails && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-6 pt-4 border-t border-neon-green/20 overflow-hidden"
+                        >
+                          <div className="bg-void/50 rounded-lg p-4">
+                            <h5 className="font-heading text-sm tracking-wider text-neon-green mb-4">
+                              MISSION INTEL: {exp.company.toUpperCase()}
+                            </h5>
+                            
+                            <div className="grid tablet:grid-cols-2 gap-4 mb-4">
+                              <div>
+                                <span className="font-mono text-xs text-white/40">ROLE:</span>
+                                <p className="font-body text-sm text-white/80">{exp.title}</p>
+                              </div>
+                              <div>
+                                <span className="font-mono text-xs text-white/40">TIMELINE:</span>
+                                <p className="font-body text-sm text-white/80">{exp.period}</p>
+                              </div>
+                            </div>
+
+                            <div className="mb-4">
+                              <span className="font-mono text-xs text-neon-cyan/70 block mb-2">DETAILED MISSION OBJECTIVES:</span>
+                              <ul className="space-y-2">
+                                {exp.missionDetails.map((detail: string, i: number) => (
+                                  <li key={i} className="font-body text-xs text-white/60 flex gap-2">
+                                    <span className="text-neon-cyan/60 mt-0.5">▸</span>
+                                    <span>{detail}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {exp.skills && (
+                              <div>
+                                <span className="font-mono text-xs text-neon-green/70 block mb-2">SKILLS MASTERED (TECH STACK):</span>
+                                <div className="grid tablet:grid-cols-2 gap-2">
+                                  {exp.skills.map((skillGroup, i: number) => (
+                                    <div key={i} className="flex items-start gap-2">
+                                      <span className="font-mono text-[10px] text-neon-green/60 min-w-[80px]">{skillGroup.category}:</span>
+                                      <div className="flex flex-wrap gap-1">
+                                        {skillGroup.tech.map((tech: string, j: number) => (
+                                          <span key={j} className="font-mono text-[10px] px-2 py-0.5 rounded bg-void-200 text-white/50 border border-white/5">
+                                            {tech}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </RevealSection>
