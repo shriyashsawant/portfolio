@@ -364,3 +364,810 @@ a {
     2px 0 #00d4ff,
     -2px 0 #ff00ff;
 }
+
+/* ─── Typewriter Effect ─── */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #00ff88; }
+}
+
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #00ff88;
+  animation: 
+    typewriter 2s steps(40, end),
+    blink-caret 0.75s step-end infinite;
+  animation-fill-mode: forwards;
+}
+
+@keyframes decryptLine {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.3;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+.mission-log-line {
+  clip-path: inset(0 100% 0 0);
+  animation: decryptLine 0.95s steps(28, end) forwards;
+  animation-delay: var(--line-delay, 0ms);
+}
+
+/* ─── Scanline Overlay for Pop-up ─── */
+.mission-popup::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ─── Stat Boost XP Display ─── */
+.stat-boost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(4px);
+  animation: statBoostIn 0.45s ease-out forwards;
+  animation-delay: var(--line-delay, 0ms);
+}
+
+@keyframes statBoostIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-boost .xp-value {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+.stat-boost .skill-name {
+  color: #e0e0e0;
+}
+
+/* ─── Progress Bar for Education ─── */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #00d4ff);
+  border-radius: 3px;
+  animation: progressFill 1.5s ease-out forwards;
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to { width: var(--progress); }
+}
+
+/* ─── Syntax Highlighting for Tech ─── */
+.tech-highlight {
+  color: #00d4ff;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.tech-highlight-orange {
+  color: #ff9500;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 149, 0, 0.5);
+}
+
+.tech-highlight-magenta {
+  color: #ff00ff;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.about-terminal-block {
+  border: 1px solid rgba(0, 255, 136, 0.16);
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(0, 255, 136, 0.02);
+}
+
+.about-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+
+.about-row span,
+.about-row strong {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+}
+
+.about-row span { color: rgba(0, 255, 136, 0.75); }
+.about-row strong { color: rgba(255, 255, 255, 0.8); font-weight: 500; }
+
+.about-copy {
+  margin-top: 6px;
+}
+
+.about-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: rgba(0, 212, 255, 0.8);
+  margin-bottom: 1px;
+}
+
+.about-copy p {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.life-loadout-grid {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.life-hex {
+  width: 40px;
+  height: 46px;
+  clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  background: linear-gradient(150deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.06));
+  color: rgba(225, 255, 247, 0.8);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.life-hex:hover,
+.life-hex:focus-visible,
+.life-hex.active {
+  border-color: rgba(0, 255, 136, 0.72);
+  color: #00ff88;
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 0 14px rgba(0, 255, 136, 0.24);
+}
+
+.life-loadout-detail {
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 6px;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.24);
+  font-size: 10px;
+}
+
+/* ─── HUD and System Layers ─── */
+.player-hud {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  z-index: 70;
+}
+
+.hud-panel {
+  position: absolute;
+  width: 220px;
+  background: rgba(8, 16, 20, 0.72);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.08);
+  padding: 10px 12px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+}
+
+.hud-panel.left {
+  left: 14px;
+}
+
+.hud-panel.right {
+  right: 14px;
+}
+
+.hud-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgba(0, 255, 136, 0.75);
+  margin-bottom: 8px;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.hud-row span,
+.hud-row strong {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+}
+
+.hud-row span {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.hud-row strong {
+  color: rgba(0, 255, 136, 0.9);
+  font-weight: 600;
+}
+
+.hud-progress {
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.hud-progress div {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff88, #00d4ff);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.35);
+  transition: width 0.5s ease;
+}
+
+.transmission-strip {
+  margin: 0 auto;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.03));
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.transmission-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: rgba(0, 212, 255, 0.9);
+}
+
+.transmission-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.command-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(2, 6, 10, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+}
+
+.command-palette,
+.launch-console {
+  width: min(92vw, 480px);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  background: rgba(7, 12, 16, 0.95);
+  box-shadow: 0 0 35px rgba(0, 255, 136, 0.14);
+  padding: 18px;
+}
+
+.command-item {
+  width: 100%;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(226, 239, 255, 0.76);
+  border-radius: 6px;
+  padding: 9px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.command-item:hover {
+  border-color: rgba(0, 255, 136, 0.45);
+  color: #00ff88;
+  transform: translateX(3px);
+}
+
+.launch-line {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 7px;
+  transition: color 0.2s;
+}
+
+.launch-line.active {
+  color: rgba(0, 255, 136, 0.85);
+}
+
+.mission-rarity {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  padding: 2px 6px;
+  border: 1px solid;
+}
+
+.rarity-common {
+  color: #f2c94c;
+  border-color: rgba(242, 201, 76, 0.45);
+  background: rgba(242, 201, 76, 0.1);
+}
+
+.rarity-rare {
+  color: #4fc3f7;
+  border-color: rgba(79, 195, 247, 0.45);
+  background: rgba(79, 195, 247, 0.1);
+}
+
+.rarity-epic {
+  color: #ff7b54;
+  border-color: rgba(255, 123, 84, 0.5);
+  background: rgba(255, 123, 84, 0.1);
+}
+
+.mission-outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mission-outcome-grid div {
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 6px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  justify-content: space-between;
+}
+
+.mission-outcome-grid span,
+.mission-outcome-grid strong {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+}
+
+.mission-outcome-grid span {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.mission-outcome-grid strong {
+  color: rgba(0, 255, 136, 0.85);
+}
+
+.skill-delta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.delta-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.delta-meta span,
+.delta-meta strong {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+}
+
+.delta-meta span { color: rgba(255, 255, 255, 0.6); }
+.delta-meta strong { color: rgba(0, 212, 255, 0.8); }
+
+.delta-track {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.delta-before,
+.delta-after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.delta-before {
+  background: rgba(0, 212, 255, 0.5);
+}
+
+.delta-after {
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.65), rgba(0, 255, 136, 0.85));
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.35);
+}
+
+.quest-shell {
+  position: relative;
+}
+
+.quest-intel {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 255, 136, 0.24);
+  background: linear-gradient(160deg, rgba(4, 16, 19, 0.92), rgba(7, 12, 20, 0.9));
+  box-shadow: inset 0 0 18px rgba(0, 255, 136, 0.06);
+  padding: 0 12px;
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+  transition: max-height 0.32s ease, opacity 0.24s ease, transform 0.24s ease, margin-top 0.24s ease, padding 0.24s ease;
+}
+
+.quest-intel-head {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(0, 255, 136, 0.8);
+  margin-bottom: 6px;
+}
+
+.group:hover .quest-intel {
+  opacity: 1;
+  transform: scale(1);
+  max-height: 240px;
+  margin-top: 12px;
+  padding: 12px;
+  pointer-events: auto;
+}
+
+.quest-intel-line {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  transition-delay: var(--intel-delay, 0ms);
+}
+
+.group:hover .quest-intel-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-locked {
+  filter: saturate(0.55);
+  position: relative;
+}
+
+.project-locked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.25) 3px, rgba(0, 0, 0, 0.25) 6px);
+  pointer-events: none;
+}
+
+.parallax-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.parallax-layer.stars {
+  background-image: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 1px, transparent 1px), radial-gradient(circle at 80% 75%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 220px 220px;
+  animation: driftStars 35s linear infinite;
+}
+
+.parallax-layer.circuits {
+  background-image: linear-gradient(120deg, rgba(0, 255, 136, 0.06) 1px, transparent 1px), linear-gradient(60deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+  background-size: 140px 140px;
+  opacity: 0.45;
+}
+
+.parallax-layer.sweep {
+  background: linear-gradient(110deg, transparent 0%, rgba(0, 255, 136, 0.04) 45%, transparent 80%);
+  transform: translateX(-100%);
+  animation: signalSweep 11s linear infinite;
+}
+
+@keyframes driftStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-60px); }
+}
+
+@keyframes signalSweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.cursor-status {
+  position: fixed;
+  z-index: 130;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.35);
+  border-radius: 4px;
+  background: rgba(8, 16, 20, 0.9);
+  padding: 2px 6px;
+}
+
+.cursor-status.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .player-hud {
+    top: auto;
+    bottom: 14px;
+  }
+
+  .hud-panel {
+    width: calc(50vw - 20px);
+    padding: 8px 9px;
+  }
+
+  .hud-row span,
+  .hud-row strong {
+    font-size: 10px;
+  }
+
+  .cursor-status,
+  .parallax-layer.sweep,
+  .scanline-overlay::after {
+    display: none;
+  }
+
+  .card-3d:hover {
+    transform: none;
+  }
+
+  .quest-intel {
+    position: static;
+    inset: auto;
+    opacity: 1;
+    transform: none;
+    margin-top: 12px;
+    max-height: 280px;
+    padding: 12px;
+    pointer-events: auto;
+  }
+
+  .quest-intel-line {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.player-hud-dock {
+  position: fixed;
+  top: 78px;
+  right: 14px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.hud-launch {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #00d4ff;
+  border: 1px solid rgba(0, 212, 255, 0.5);
+  background: rgba(11, 22, 30, 0.52);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hud-launch:hover {
+  color: #00ff88;
+  border-color: rgba(0, 255, 136, 0.65);
+}
+
+.hud-console {
+  width: min(320px, 86vw);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(14, 26, 34, 0.88), rgba(11, 18, 27, 0.76));
+  box-shadow: 0 14px 30px rgba(0, 10, 18, 0.35), inset 0 0 14px rgba(0, 212, 255, 0.09);
+  backdrop-filter: blur(10px);
+  padding: 10px;
+}
+
+.hud-console-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.hud-console-tabs button {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.hud-console-tabs button.active {
+  border-color: rgba(0, 255, 136, 0.5);
+  color: #00ff88;
+  background: rgba(0, 255, 136, 0.1);
+}
+
+.hud-sound {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 212, 255, 0.45);
+  background: rgba(0, 212, 255, 0.08);
+  color: #00d4ff;
+  cursor: pointer;
+}
+
+.hud-sound:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.terminal-log {
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  border-radius: 6px;
+  min-height: 120px;
+  max-height: 180px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: rgba(224, 255, 244, 0.76);
+  line-height: 1.5;
+}
+
+.terminal-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.terminal-input-wrap span {
+  font-family: 'Share Tech Mono', monospace;
+  color: #00ff88;
+  font-size: 12px;
+}
+
+.terminal-input-wrap input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+}
+
+.terminal-hint {
+  margin-top: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.terminal-hint span {
+  color: rgba(0, 255, 136, 0.8);
+}
+
+.easter-badge {
+  margin-top: 8px;
+  display: inline-block;
+  border: 1px solid rgba(255, 123, 84, 0.55);
+  background: rgba(255, 123, 84, 0.12);
+  color: #ffb398;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.badge-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 140;
+  border: 1px solid rgba(255, 123, 84, 0.6);
+  background: rgba(28, 14, 10, 0.9);
+  color: #ffb398;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  animation: toastIn 0.25s ease-out;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .player-hud-dock {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .hud-console {
+    width: min(300px, 92vw);
+  }
+}

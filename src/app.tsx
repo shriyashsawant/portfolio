@@ -1,4 +1,4 @@
-import { Component, useEffect, useRef, useState } from 'react';
+import { Component, useEffect, useMemo, useRef, useState } from 'react';
 import type { ErrorInfo, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Scene3DComponent from './components/Scene3D';
@@ -39,6 +39,13 @@ const experiences = [
     link: 'https://gobasera.com/',
     period: 'Sep 2025 – Nov 2025',
     tag: 'ACTIVE MISSION',
+    rarity: 'EPIC',
+    outcome: {
+      impact: 94,
+      difficulty: 'S-RANK',
+      duration: '3 CYCLES',
+      reward: '+34 XP',
+    },
     points: [
       'Building live SaaS platform features with React & PostgreSQL',
       '80%+ test coverage using TDD & enterprise QA standards',
@@ -58,6 +65,12 @@ const experiences = [
       { category: 'DevOps', tech: ['Docker', 'GitHub Actions', 'CI/CD'] },
       { category: 'Workflow', tech: ['Pair Programming', 'Code Reviews', 'Kanban'] },
     ],
+    statBoosts: [
+      { skill: 'React / Node.js', xp: '+12 XP' },
+      { skill: 'DevOps (Docker/CI-CD)', xp: '+15 XP' },
+      { skill: 'PostgreSQL / MongoDB', xp: '+8 XP' },
+      { skill: 'AWS Cloud', xp: '+6 XP' },
+    ],
   },
 
   {
@@ -66,6 +79,13 @@ const experiences = [
     link: 'https://edunetfoundation.org/',
     period: 'July 2025 – Aug 2025',
     tag: 'COMPLETED',
+    rarity: 'RARE',
+    outcome: {
+      impact: 82,
+      difficulty: 'A-RANK',
+      duration: '2 CYCLES',
+      reward: '+22 XP',
+    },
     points: [
       'Built a high-performance classification tool using React, Vite, and TypeScript',
       'Integrated Supabase for secure image storage and backend data management',
@@ -84,6 +104,11 @@ const experiences = [
       { category: 'AI/ML', tech: ['Machine Learning', 'Data Analysis', 'Python'] },
       { category: 'Tools', tech: ['Git', 'VS Code', 'Jupyter'] },
     ],
+    statBoosts: [
+      { skill: 'React / Node.js', xp: '+9 XP' },
+      { skill: 'PostgreSQL / MongoDB', xp: '+6 XP' },
+      { skill: 'DSA / System Design', xp: '+7 XP' },
+    ],
   },
 
   {
@@ -92,6 +117,13 @@ const experiences = [
     link: 'https://www.bynry.com/',
     period: 'Jul 2025 – Aug 2025',
     tag: 'COMPLETED',
+    rarity: 'RARE',
+    outcome: {
+      impact: 79,
+      difficulty: 'A-RANK',
+      duration: '2 CYCLES',
+      reward: '+26 XP',
+    },
     points: [
       'API testing & Root Cause Analysis with QA teams',
       'AWS & Jenkins automation for data migration & incident mgmt',
@@ -109,6 +141,11 @@ const experiences = [
       { category: 'Testing', tech: ['API Testing', 'Postman', 'Selenium'] },
       { category: 'Support', tech: ['Troubleshooting', 'Documentation', 'RCA'] },
     ],
+    statBoosts: [
+      { skill: 'AWS Cloud', xp: '+11 XP' },
+      { skill: 'DevOps (Docker/CI-CD)', xp: '+10 XP' },
+      { skill: 'DSA / System Design', xp: '+5 XP' },
+    ],
   },
   {
     title: 'Full Stack Developer Intern',
@@ -116,6 +153,13 @@ const experiences = [
     link: 'https://bharatinternship.com/',
     period: 'Feb 2024 – Mar 2024',
     tag: 'COMPLETED',
+    rarity: 'COMMON',
+    outcome: {
+      impact: 74,
+      difficulty: 'B-RANK',
+      duration: '1 CYCLE',
+      reward: '+21 XP',
+    },
     points: [
       'Delivered expense tracker & signup systems (Node.js + MongoDB)',
       'Optimized API response times & secure auth flows',
@@ -133,6 +177,11 @@ const experiences = [
       { category: 'Authentication', tech: ['JWT', 'Bcrypt', 'OAuth'] },
       { category: 'Tools', tech: ['Git', 'Postman', 'MongoDB Atlas'] },
     ],
+    statBoosts: [
+      { skill: 'React / Node.js', xp: '+8 XP' },
+      { skill: 'PostgreSQL / MongoDB', xp: '+9 XP' },
+      { skill: 'DevOps (Docker/CI-CD)', xp: '+4 XP' },
+    ],
   },
 ];
 
@@ -141,7 +190,12 @@ const projects = [
     title: 'DriveSmarter',
     subtitle: 'AI Vehicle Co-Pilot',
     link: 'https://github.com/shriyashsawant/CodeName-Chariot',
-    desc: 'End-to-end AI system integrating vehicle diagnostics with real-time Computer Vision (OpenCV). React/NestJS dashboard for hands-free vehicle telemetry. Backend with Docker + AWS for scalable data processing.',
+    desc: 'End-to-end AI system integrating vehicle diagnostics with real-time Computer Vision. React/NestJS dashboard for hands-free vehicle telemetry.',
+    objective: 'Deploy an AI co-pilot for real-time diagnostics and safer driving telemetry.',
+    bossFight: 'Synchronizing CV inference with live vehicle streams under low-latency constraints.',
+    loot: 'Real-time telemetry dashboard, scalable Dockerized backend, intelligent alerting pipeline.',
+    faction: 'AI DIVISION',
+    rarity: 'EPIC',
     tech: ['React', 'NestJS', 'OpenCV', 'Docker', 'AWS'],
     color: '#00ff88',
     image: '/images/project-drivesmarter.png',
@@ -150,7 +204,12 @@ const projects = [
     title: 'DevOps Chatbot',
     subtitle: 'Automated Infrastructure',
     link: 'https://github.com/shriyashsawant/devops-chatbot-java',
-    desc: 'Slack-integrated Jenkins automation for health checks, logs, and service restarts. Docker-deployed with automated CI/CD pipelines for streamlined system maintenance.',
+    desc: 'Slack-integrated Jenkins automation for health checks, logs, and service restarts. Docker-deployed with automated CI/CD pipelines.',
+    objective: 'Create a command bot for one-click infrastructure diagnostics and recovery actions.',
+    bossFight: 'Safe automation of restarts and logs while preserving operational uptime.',
+    loot: 'Slack-integrated ops assistant, Jenkins automation, resilient CI/CD control loop.',
+    faction: 'CLOUD OPS',
+    rarity: 'RARE',
     tech: ['Slack API', 'Jenkins', 'Docker', 'CI/CD'],
     color: '#00d4ff',
     image: '/images/project-devops-chatbot.png',
@@ -160,6 +219,11 @@ const projects = [
     subtitle: 'Serverless Management',
     link: 'https://github.com/shriyashsawant/Event_Managment_Portal',
     desc: 'Serverless AWS Amplify backend with S3 for secure image uploads and API Gateway. Full infrastructure management with scalable cloud architecture.',
+    objective: 'Build a serverless event system with secure media upload and API scalability.',
+    bossFight: 'Balancing secure storage policies with smooth UX across upload-heavy flows.',
+    loot: 'Amplify + S3 architecture, scalable API gateway integration, low-maintenance hosting.',
+    faction: 'DEVSEC GUILD',
+    rarity: 'COMMON',
     tech: ['AWS Amplify', 'S3', 'API Gateway', 'Serverless'],
     color: '#ff00ff',
     image: '/images/project-event-portal.png',
@@ -167,12 +231,321 @@ const projects = [
 ];
 
 const certifications = [
-  'AWS Academy Cloud Foundations (2024)',
-  'AWS APAC Solutions Architecture – Forage (2025)',
-  'Verizon Cloud Platform – Forage (2025)',
-  'Web Development – Teachnook & IIT Bhubaneswar',
-  'Linguaskill – Soft Skills Certification',
+  { name: 'AWS Academy Cloud Foundations (2024)', link: 'https://drive.google.com/file/d/1mZkrFn58eJ2sCkkPV8Zo9HqWeWOaLuMv/view?usp=sharing' },
+  { name: 'AWS APAC Solutions Architecture – Forage (2025)', link: 'https://drive.google.com/file/d/16hy532kZONrMG0h0gQP48cteiT9rPJSU/view?usp=sharing' },
+  { name: 'Verizon Cloud Platform – Forage (2025)', link: 'https://drive.google.com/file/d/18gXdpM7_tSK4i4Qx4lCG0b4XbiO5vdcA/view?usp=drive_link' },
+  { name: 'Web Development – Teachnook & IIT Bhubaneswar', link: 'https://drive.google.com/file/d/1hSjoHV35ZQH97PAeAPdFZfgBgwvBsIiL/view?usp=sharing' },
+  { name: 'Linguaskill – Soft Skills Certification', link: 'https://drive.google.com/file/d/1j7gkn_g1wToCZM5gSYXoGxck1XtI6iFS/view?usp=sharing' },
 ];
+
+const sectionRewards: Record<string, number> = {
+  about: 10,
+  skills: 12,
+  experience: 18,
+  projects: 20,
+  certifications: 8,
+  contact: 12,
+};
+
+const missionNav = [
+  { label: 'ORIGIN STORY', href: '#about' },
+  { label: 'SKILL', href: '#skills' },
+  { label: 'XP', href: '#experience' },
+  { label: 'QUEST BOARD', href: '#projects' },
+  { label: 'CERTS', href: '#certifications' },
+  { label: 'OPEN COMMS', href: '#contact' },
+];
+
+const lifeLoadout = [
+  {
+    title: 'Cricket & Trekking',
+    code: 'CT',
+    description: 'Field discipline and endurance training that sharpen execution under pressure.',
+    boost: '+ Stamina / Team Synergy',
+  },
+  {
+    title: 'Kaizen & Japanese Culture',
+    code: 'KZ',
+    description: 'Continuous refinement mindset focused on precision, quality, and system efficiency.',
+    boost: '+ Code Quality / Efficiency',
+  },
+  {
+    title: 'Volunteer Work',
+    code: 'VW',
+    description: 'Community-led initiatives that improve leadership, ownership, and team coordination.',
+    boost: '+ Management / Leadership',
+  },
+];
+
+const parseXP = (xp: string) => Number.parseInt(xp.replace(/[^\d]/g, ''), 10) || 0;
+
+const getPlayerRank = (level: number) => {
+  if (level >= 9) return 'ARCHITECT PRIME';
+  if (level >= 6) return 'SYSTEM COMMANDER';
+  if (level >= 4) return 'TECH SPECIALIST';
+  return 'INITIATE';
+};
+
+const getRarityClass = (rarity: string) => {
+  if (rarity === 'EPIC') return 'rarity-epic';
+  if (rarity === 'RARE') return 'rarity-rare';
+  return 'rarity-common';
+};
+
+function PlayerHUD({
+  xp,
+  level,
+  rank,
+  questsCompleted,
+  activeMission,
+  soundMuted,
+  soundLocked,
+  onToggleSound,
+  easterEggUnlocked,
+  onOpenTerminal,
+}: {
+  xp: number;
+  level: number;
+  rank: string;
+  questsCompleted: number;
+  activeMission: string;
+  soundMuted: boolean;
+  soundLocked: boolean;
+  onToggleSound: () => void;
+  easterEggUnlocked: boolean;
+  onOpenTerminal: () => void;
+}) {
+  const levelProgress = (xp % 100) / 100;
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState<'profile' | 'hud'>('profile');
+
+  return (
+    <div className="player-hud-dock">
+      <button className="hud-launch" data-cursor="HUD" onClick={() => setOpen((v) => !v)}>
+        {open ? '[CLOSE HUD]' : '[OPEN HUD]'}
+      </button>
+      {open && (
+        <div className="hud-console">
+          <div className="hud-console-tabs">
+            <button className={tab === 'profile' ? 'active' : ''} onClick={() => setTab('profile')}>PLAYER</button>
+            <button className={tab === 'hud' ? 'active' : ''} onClick={() => setTab('hud')}>LIVE</button>
+          </div>
+          {tab === 'profile' ? (
+            <>
+              <div className="hud-row"><span>LEVEL</span><strong>{level}</strong></div>
+              <div className="hud-row"><span>XP</span><strong>{xp}</strong></div>
+              <div className="hud-row"><span>BADGE</span><strong>{easterEggUnlocked ? 'UNLOCKED' : 'HIDDEN'}</strong></div>
+              <div className="hud-progress"><div style={{ width: `${Math.max(levelProgress * 100, 4)}%` }} /></div>
+            </>
+          ) : (
+            <>
+              <div className="hud-row"><span>RANK</span><strong>{rank}</strong></div>
+              <div className="hud-row"><span>QUESTS</span><strong>{questsCompleted}</strong></div>
+              <div className="hud-row"><span>MISSION</span><strong>{activeMission}</strong></div>
+              <div className="hud-row">
+                <span>AUDIO</span>
+                <button className="hud-sound" data-cursor="SOUND" onClick={onToggleSound} disabled={soundLocked}>
+                  {soundLocked ? 'MOBILE LOCK' : soundMuted ? 'MUTED' : 'LIVE'}
+                </button>
+              </div>
+              <div className="hud-row">
+                <span>TERMINAL</span>
+                <button className="hud-sound" data-cursor="TERM" onClick={onOpenTerminal}>
+                  OPEN
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HiddenTerminal({
+  open,
+  onClose,
+  onUnlock,
+  unlocked,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onUnlock: () => void;
+  unlocked: boolean;
+}) {
+  const [command, setCommand] = useState('');
+  const [logs, setLogs] = useState<string[]>(['Terminal ready. Type help']);
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+
+  useEffect(() => {
+    if (!open) return;
+    setCommand('');
+    setHistoryIndex(-1);
+    setLogs([
+      'Booting hidden shell...',
+      'Bypassing firewalls... OK',
+      unlocked ? 'Badge protocol already unlocked.' : 'Ghost protocol locked.',
+      'Type help to inspect commands',
+    ]);
+  }, [open, unlocked]);
+
+  const runCommand = () => {
+    const cmd = command.trim().toLowerCase();
+    if (!cmd) return;
+    setHistory((prev) => [...prev, cmd]);
+    setHistoryIndex(-1);
+    if (cmd === 'clear') {
+      setLogs([]);
+      setCommand('');
+      return;
+    }
+    if (cmd === 'help') {
+      setLogs((prev) => [...prev, '> help', 'Available: help, status, scan vault, clear, sudo unlock-badge, exit']);
+      setCommand('');
+      return;
+    }
+    if (cmd === 'status') {
+      setLogs((prev) => [...prev, '> status', unlocked ? 'Badge status: UNLOCKED' : 'Badge status: LOCKED']);
+      setCommand('');
+      return;
+    }
+    if (cmd === 'scan vault') {
+      setLogs((prev) => [...prev, '> scan vault', 'Vault scan: signal detected in keyword stream [cyberbadge]']);
+      setCommand('');
+      return;
+    }
+    if (cmd === 'sudo unlock-badge') {
+      setLogs((prev) => [...prev, '> sudo unlock-badge', unlocked ? 'Badge already unlocked.' : 'Access granted. Badge unlocked.']);
+      onUnlock();
+      setCommand('');
+      return;
+    }
+    if (cmd === 'exit') {
+      onClose();
+      return;
+    }
+    setLogs((prev) => [...prev, `> ${cmd}`, 'Unknown command']);
+    setCommand('');
+  };
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className="command-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
+          <motion.div className="command-palette" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} onClick={(e) => e.stopPropagation()}>
+            <div className="font-mono text-xs text-neon-green/80 mb-2">HIDDEN_TERMINAL</div>
+            <div className="terminal-log mb-3">
+              {logs.slice(-6).map((line, idx) => <div key={`${line}-${idx}`}>{line}</div>)}
+            </div>
+            <div className="terminal-input-wrap">
+              <span>&gt;</span>
+              <input
+                value={command}
+                onChange={(e) => setCommand(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') runCommand();
+                  if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (!history.length) return;
+                    const nextIndex = historyIndex < history.length - 1 ? historyIndex + 1 : history.length - 1;
+                    setHistoryIndex(nextIndex);
+                    setCommand(history[history.length - 1 - nextIndex]);
+                  }
+                  if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (historyIndex <= 0) {
+                      setHistoryIndex(-1);
+                      setCommand('');
+                      return;
+                    }
+                    const nextIndex = historyIndex - 1;
+                    setHistoryIndex(nextIndex);
+                    setCommand(history[history.length - 1 - nextIndex]);
+                  }
+                  if (e.key === 'Escape') onClose();
+                }}
+                placeholder="type command"
+                autoFocus
+              />
+            </div>
+            <div className="terminal-hint">Tip: try <span>scan vault</span> or <span>sudo unlock-badge</span></div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function Footer({ unlockedBadge }: { unlockedBadge: boolean }) {
+  return (
+    <footer className="relative z-10 py-8 px-4 border-t border-neon-green/5">
+      <div className="max-w-4xl mx-auto text-center">
+        <div className="font-mono text-xs text-white/20">
+          © 2026 SHRIYASH SAWANT — Crafted with code & creativity
+        </div>
+        <div className="font-mono text-[10px] text-neon-green/20 mt-1">
+          v1.0.0 // SHRIYASH.exe
+        </div>
+        {unlockedBadge && <div className="easter-badge">BADGE_UNLOCKED: GHOST_PROTOCOL</div>}
+      </div>
+    </footer>
+  );
+}
+
+function CommandPalette({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
+  const actions = [
+    { label: 'Open Quest Board', action: () => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' }) },
+    { label: 'Open Mission Log', action: () => document.querySelector('#experience')?.scrollIntoView({ behavior: 'smooth' }) },
+    { label: 'Open Skill Tree', action: () => document.querySelector('#skills')?.scrollIntoView({ behavior: 'smooth' }) },
+    { label: 'Initiate Comms', action: () => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) },
+  ];
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="command-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+        >
+          <motion.div
+            className="command-palette"
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.96 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="font-mono text-xs text-neon-green/70 mb-3">COMMAND_MATRIX</div>
+            <div className="space-y-2">
+              {actions.map((action) => (
+                <button
+                  key={action.label}
+                  className="command-item"
+                  data-cursor="EXEC"
+                  onClick={() => {
+                    action.action();
+                    onClose();
+                  }}
+                >
+                  {'> '}{action.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 /* ─── Hook: Intersection observer for reveal animations ─── */
 function useReveal() {
@@ -268,15 +641,6 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  const links = [
-    { label: 'ABOUT', href: '#about' },
-    { label: 'SKILLS', href: '#skills' },
-    { label: 'XP', href: '#experience' },
-    { label: 'PROJECTS', href: '#projects' },
-    { label: 'CERTS', href: '#certifications' },
-    { label: 'CONTACT', href: '#contact' },
-  ];
-
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const target = document.querySelector(href);
@@ -293,10 +657,11 @@ function Navbar() {
           SS<span className="text-neon-cyan">.</span>exe
         </a>
         <div className="hidden tablet:flex items-center gap-6">
-          {links.map((l) => (
+          {missionNav.map((l) => (
             <a
               key={l.label}
               href={l.href}
+              data-cursor="NAV"
               onClick={(e) => handleSmoothScroll(e, l.href)}
               className="font-heading text-xs tracking-wider text-white/60 hover:text-neon-green transition-colors relative group"
             >
@@ -314,10 +679,11 @@ function Navbar() {
       </div>
       {mobileOpen && (
         <div className="tablet:hidden bg-void/95 backdrop-blur-md border-t border-neon-green/10 px-4 py-4 space-y-3">
-          {links.map((l) => (
+          {missionNav.map((l) => (
             <a
               key={l.label}
               href={l.href}
+              data-cursor="NAV"
               className="block font-heading text-sm tracking-wider text-white/70 hover:text-neon-green transition-colors"
               onClick={(e) => handleSmoothScroll(e, l.href)}
             >
@@ -396,6 +762,8 @@ function HeroSection() {
 
 /* ─── About Section ─── */
 function AboutSection() {
+  const [activeLoadout, setActiveLoadout] = useState<number>(0);
+
   return (
     <section id="about" className="relative z-10 py-24 px-4">
       <div className="max-w-4xl mx-auto">
@@ -419,6 +787,30 @@ function AboutSection() {
                   Committed to the philosophy of <span className="text-neon-magenta">Kaizen</span> — continuous improvement — and eager to
                   contribute technical rigor to global engineering teams.
                 </p>
+
+                <div className="mt-6 pt-4 border-t border-neon-green/10">
+                  <h5 className="font-heading text-xs tracking-wider text-neon-cyan mb-3">[LIFE_LOADOUT]</h5>
+                  <div className="life-loadout-grid">
+                    {lifeLoadout.map((entry, idx) => (
+                      <button
+                        key={entry.title}
+                        className={`life-hex ${activeLoadout === idx ? 'active' : ''}`}
+                        data-cursor="SCAN"
+                        onMouseEnter={() => setActiveLoadout(idx)}
+                        onFocus={() => setActiveLoadout(idx)}
+                        onClick={() => setActiveLoadout(idx)}
+                      >
+                        <span>{entry.code}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="life-loadout-detail">
+                    <div className="font-mono text-[10px] text-neon-cyan/80 mb-1">ACHIEVEMENT UNLOCKED</div>
+                    <div className="font-heading text-sm text-white mb-1">{lifeLoadout[activeLoadout].title}</div>
+                    <p className="font-body text-xs text-white/65 leading-relaxed mb-2">{lifeLoadout[activeLoadout].description}</p>
+                    <div className="font-mono text-[10px] text-neon-green/80">STAT BOOST: {lifeLoadout[activeLoadout].boost}</div>
+                  </div>
+                </div>
               </div>
               <div className="space-y-4">
                 <div className="neon-border rounded-lg p-4 text-center">
@@ -496,12 +888,34 @@ function SkillsSection() {
 }
 
 /* ─── Experience Section ─── */
-function ExperienceSection() {
+function ExperienceSection({ onMissionOpen }: { onMissionOpen: (idx: number) => void }) {
   const [expandedMission, setExpandedMission] = useState<number | null>(null);
+  const [replaySeed, setReplaySeed] = useState(0);
+
+  const skillLookup = useMemo(() => {
+    return skills.reduce<Record<string, number>>((acc, item) => {
+      acc[item.name] = item.level;
+      return acc;
+    }, {});
+  }, []);
 
   const toggleMission = (idx: number) => {
-    setExpandedMission(expandedMission === idx ? null : idx);
+    if (expandedMission === idx) {
+      setExpandedMission(null);
+      return;
+    }
+    setReplaySeed((v) => v + 1);
+    setExpandedMission(idx);
+    onMissionOpen(idx);
   };
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setExpandedMission(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   // Get current expanded mission data
   const currentMission = expandedMission !== null ? experiences[expandedMission] : null;
@@ -536,6 +950,7 @@ function ExperienceSection() {
                       <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-neon-green/10 text-neon-green border border-neon-green/20">
                         {exp.tag}
                       </span>
+                      <span className={`mission-rarity ${getRarityClass(exp.rarity)}`}>{exp.rarity}</span>
                       <span className="font-mono text-xs text-white/40">{exp.period}</span>
                       <span className="font-mono text-xs text-neon-cyan/50 ml-auto">
                         [VIEW MISSION]
@@ -573,7 +988,8 @@ function ExperienceSection() {
             onClick={() => setExpandedMission(null)}
           >
             <motion.div 
-              className="mission-details-expanded"
+              key={`${currentMission.company}-${replaySeed}`}
+              className="mission-details-expanded mission-popup"
               initial={{ opacity: 0, scale: 0.5, y: 50 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, y: 50 }}
@@ -602,12 +1018,25 @@ function ExperienceSection() {
                 </div>
               </div>
 
+              {currentMission.outcome && (
+                <div className="mission-outcome-grid mb-4">
+                  <div><span>IMPACT</span><strong>{currentMission.outcome.impact}%</strong></div>
+                  <div><span>DIFFICULTY</span><strong>{currentMission.outcome.difficulty}</strong></div>
+                  <div><span>DURATION</span><strong>{currentMission.outcome.duration}</strong></div>
+                  <div><span>REWARD</span><strong>{currentMission.outcome.reward}</strong></div>
+                </div>
+              )}
+
               {currentMission.missionDetails && (
                 <div className="mb-4">
                   <span className="font-mono text-xs text-neon-cyan/70 block mb-2">MISSION OBJECTIVES:</span>
                   <ul className="space-y-2">
                     {currentMission.missionDetails.map((detail: string, i: number) => (
-                      <li key={i} className="font-body text-xs text-white/60 flex gap-2">
+                      <li
+                        key={i}
+                        className="font-body text-xs text-white/60 flex gap-2 mission-log-line"
+                        style={{ '--line-delay': `${120 + i * 140}ms` } as React.CSSProperties}
+                      >
                         <span className="text-neon-cyan/60 mt-0.5">▸</span>
                         <span>{detail}</span>
                       </li>
@@ -632,6 +1061,46 @@ function ExperienceSection() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {currentMission.statBoosts && (
+                <div className="mt-5 pt-4 border-t border-neon-green/20">
+                  <span className="font-mono text-xs text-neon-green/80 block mb-3">[STAT_BOOSTS_GAINED]</span>
+                  <div className="flex flex-wrap gap-2">
+                    {currentMission.statBoosts.map((boost, i: number) => (
+                      <div
+                        key={`${boost.skill}-${i}`}
+                        className="stat-boost"
+                        style={{ '--line-delay': `${200 + i * 120}ms` } as React.CSSProperties}
+                      >
+                        <span className="skill-name">{boost.skill}:</span>
+                        <span className="xp-value">{boost.xp}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 space-y-2">
+                    <span className="font-mono text-[10px] text-neon-cyan/70 block">SKILL DELTA</span>
+                    {currentMission.statBoosts.map((boost, i: number) => {
+                      const base = skillLookup[boost.skill] ?? 60;
+                      const delta = parseXP(boost.xp);
+                      const capped = Math.min(base + delta, 100);
+
+                      return (
+                        <div key={`delta-${boost.skill}-${i}`} className="skill-delta-row">
+                          <div className="delta-meta">
+                            <span>{boost.skill}</span>
+                            <strong>{base} {'->'} {capped}</strong>
+                          </div>
+                          <div className="delta-track">
+                            <div className="delta-before" style={{ width: `${base}%` }} />
+                            <div className="delta-after" style={{ width: `${capped}%` }} />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -686,7 +1155,11 @@ const certVariants = {
 };
 
 /* ─── Projects Section ─── */
-function ProjectsSection() {
+function ProjectsSection({
+  unlocked,
+}: {
+  unlocked: boolean;
+}) {
   return (
     <section id="projects" className="relative z-10 py-24 px-4">
       <div className="max-w-5xl mx-auto">
@@ -714,13 +1187,10 @@ function ProjectsSection() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={cardVariants}
-              whileHover={{
-                y: -8,
-                transition: { duration: 0.3 },
-              }}
+              whileHover={unlocked ? { y: -8, transition: { duration: 0.3 } } : undefined}
             >
               <div
-                className="neon-border bg-hud-card rounded-lg overflow-hidden h-full card-3d group hover:shadow-neon transition-all duration-500"
+                className={`neon-border bg-hud-card rounded-lg overflow-hidden h-full card-3d group transition-all duration-500 ${unlocked ? 'hover:shadow-neon' : 'project-locked'}`}
                 style={{ borderColor: `${proj.color}20` }}
               >
                 {/* Project Image */}
@@ -741,23 +1211,43 @@ function ProjectsSection() {
                   <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)] pointer-events-none" />
                 </div>
 
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color, boxShadow: `0 0 8px ${proj.color}` }} />
-                    <span className="font-mono text-[10px] tracking-wider" style={{ color: `${proj.color}99` }}>{proj.subtitle.toUpperCase()}</span>
+                <div className="p-6 quest-shell">
+                  <div className="mb-3 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color, boxShadow: `0 0 8px ${proj.color}` }} />
+                      <span className="font-mono text-[10px] tracking-wider" style={{ color: `${proj.color}99` }}>{proj.subtitle.toUpperCase()}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`mission-rarity ${getRarityClass(proj.rarity)}`}>{proj.rarity}</span>
+                      <span className="font-mono text-[10px] text-white/40">{proj.faction}</span>
+                    </div>
                   </div>
                   <a href={proj.link} target="_blank" rel="noopener noreferrer" className="block">
                     <h4 className="font-heading text-xl tracking-wider text-white mb-3 group-hover:text-neon-green transition-colors">
                       {proj.title}
                     </h4>
                   </a>
-                  <p className="font-body text-sm text-white/50 leading-relaxed mb-4">{proj.desc}</p>
+                  <p className="font-body text-sm text-white/55 leading-relaxed mb-4">
+                    {proj.desc}
+                  </p>
                   <div className="flex flex-wrap gap-1.5 mt-auto">
                     {proj.tech.map((t) => (
                       <span key={t} className="font-mono text-[10px] px-2 py-0.5 rounded bg-void-200 text-white/40 border border-white/5">
                         {t}
                       </span>
                     ))}
+                  </div>
+                  <div className="mt-3 font-mono text-[10px] text-white/35">
+                    {unlocked ? '[OPEN REPOSITORY VIA TITLE]' : '[LOCKED: COMPLETE MISSION LOG]'}
+                  </div>
+
+                  <div className="quest-intel" aria-hidden="true">
+                    <div className="quest-intel-head quest-intel-line" style={{ '--intel-delay': '40ms' } as React.CSSProperties}>MISSION_INTEL</div>
+                    <div className="space-y-2">
+                      <p className="font-body text-sm text-white/70 leading-relaxed quest-intel-line" style={{ '--intel-delay': '120ms' } as React.CSSProperties}><span className="text-neon-cyan/80">OBJECTIVE:</span> {proj.objective}</p>
+                      <p className="font-body text-xs text-white/65 leading-relaxed quest-intel-line" style={{ '--intel-delay': '210ms' } as React.CSSProperties}><span className="text-neon-green/80">BOSS FIGHT:</span> {proj.bossFight}</p>
+                      <p className="font-body text-xs text-white/65 leading-relaxed quest-intel-line" style={{ '--intel-delay': '300ms' } as React.CSSProperties}><span className="text-[#f2c94c]">LOOT:</span> {proj.loot}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -802,10 +1292,16 @@ function CertificationsSection() {
                 transition: { duration: 0.2 },
               }}
             >
-              <div className="neon-border bg-hud-card rounded-lg p-4 flex items-center gap-3 hover:bg-void-200 hover:border-neon-green/30 transition-all duration-300 cursor-default">
+              <a
+                href={cert.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="neon-border bg-hud-card rounded-lg p-4 flex items-center gap-3 hover:bg-void-200 hover:border-neon-green/30 transition-all duration-300 block"
+                data-cursor="OPEN"
+              >
                 <div className="font-heading text-lg text-neon-green animate-pulse-neon">✦</div>
-                <span className="font-body text-sm text-white/70">{cert}</span>
-              </div>
+                <span className="font-body text-sm text-white/70">{cert.name}</span>
+              </a>
             </motion.div>
           ))}
         </div>
@@ -890,28 +1386,220 @@ function ContactSection() {
   );
 }
 
-/* ─── Footer ─── */
-function Footer() {
-  return (
-    <footer className="relative z-10 py-8 px-4 border-t border-neon-green/5">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="font-mono text-xs text-white/20">
-          © 2026 SHRIYASH SAWANT — Crafted with code & creativity
-        </div>
-        <div className="font-mono text-[10px] text-neon-green/20 mt-1">
-          v1.0.0 // SHRIYASH.exe
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 /* ─── Main App ─── */
 function App() {
   const [loading, setLoading] = useState(true);
+  const [profileXP, setProfileXP] = useState(0);
+  const [unlockedSections, setUnlockedSections] = useState<string[]>([]);
+  const [missionsVisited, setMissionsVisited] = useState<number[]>([]);
+  const [easterEggUnlocked, setEasterEggUnlocked] = useState(false);
+  const [badgeToast, setBadgeToast] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [terminalOpen, setTerminalOpen] = useState(false);
+  const [soundMuted, setSoundMuted] = useState(true);
+  const [soundLocked, setSoundLocked] = useState(false);
+  const [cursorLabel, setCursorLabel] = useState<{ x: number; y: number; label: string; visible: boolean }>({
+    x: 0,
+    y: 0,
+    label: 'SCAN',
+    visible: false,
+  });
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const ambientGainRef = useRef<GainNode | null>(null);
+  const ambientOscRef = useRef<OscillatorNode | null>(null);
+
+  const level = useMemo(() => Math.floor(profileXP / 100) + 1, [profileXP]);
+  const rank = useMemo(() => getPlayerRank(level), [level]);
+  const activeMission = useMemo(() => {
+    if (unlockedSections.includes('projects')) return 'QUEST BOARD ONLINE';
+    return 'SCANNING SECTOR';
+  }, [unlockedSections]);
+
+  useEffect(() => {
+    const savedXP = window.localStorage.getItem('player_xp');
+    const savedSections = window.localStorage.getItem('unlocked_sections');
+    const savedMissions = window.localStorage.getItem('missions_visited');
+    const savedBadge = window.localStorage.getItem('easter_badge');
+    if (savedXP) setProfileXP(Number(savedXP));
+    if (savedSections) setUnlockedSections(JSON.parse(savedSections));
+    if (savedMissions) setMissionsVisited(JSON.parse(savedMissions));
+    if (savedBadge === 'true') setEasterEggUnlocked(true);
+
+    const mobile = window.matchMedia('(max-width: 900px)').matches;
+    if (mobile) {
+      setSoundLocked(true);
+      setSoundMuted(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem('player_xp', String(profileXP));
+    window.localStorage.setItem('unlocked_sections', JSON.stringify(unlockedSections));
+    window.localStorage.setItem('missions_visited', JSON.stringify(missionsVisited));
+    window.localStorage.setItem('easter_badge', easterEggUnlocked ? 'true' : 'false');
+  }, [profileXP, unlockedSections, missionsVisited, easterEggUnlocked]);
+
+  const startAmbient = () => {
+    if (soundLocked || soundMuted) return;
+    if (!audioContextRef.current) {
+      audioContextRef.current = new window.AudioContext();
+    }
+    const ctx = audioContextRef.current;
+    if (ambientOscRef.current) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = 62;
+    gain.gain.value = 0.015;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    ambientOscRef.current = osc;
+    ambientGainRef.current = gain;
+  };
+
+  const stopAmbient = () => {
+    ambientOscRef.current?.stop();
+    ambientOscRef.current?.disconnect();
+    ambientGainRef.current?.disconnect();
+    ambientOscRef.current = null;
+    ambientGainRef.current = null;
+  };
+
+  const playUiBeep = (freq = 520) => {
+    if (soundMuted || soundLocked) return;
+    if (!audioContextRef.current) return;
+    const ctx = audioContextRef.current;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    gain.gain.value = 0.001;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    const now = ctx.currentTime;
+    gain.gain.exponentialRampToValueAtTime(0.02, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  };
+
+  useEffect(() => {
+    if (soundMuted || soundLocked) {
+      stopAmbient();
+      return;
+    }
+    startAmbient();
+    return () => stopAmbient();
+  }, [soundMuted, soundLocked]);
+
+  useEffect(() => {
+    if (loading) return;
+    const ids = Object.keys(sectionRewards);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          if (!entry.isIntersecting) return;
+          setUnlockedSections((prev) => {
+            if (prev.includes(id)) return prev;
+            setProfileXP((xp) => xp + (sectionRewards[id] ?? 0));
+            return [...prev, id];
+          });
+        });
+      },
+      { threshold: 0.35 }
+    );
+
+    ids.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, [loading]);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      if ((event.metaKey || event.ctrlKey) && key === 'k') {
+        event.preventDefault();
+        setCommandOpen((v) => !v);
+        playUiBeep(610);
+      }
+      const isBackquoteToggle = event.code === 'Backquote' || event.key === '`' || event.key === '~' || event.key === 'Dead';
+      if (isBackquoteToggle || (event.altKey && key === 't')) {
+        event.preventDefault();
+        setTerminalOpen((v) => !v);
+      }
+      if (key === 'g') document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+      if (key === 's') document.querySelector('#skills')?.scrollIntoView({ behavior: 'smooth' });
+      if (key === 'c') document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+
+      const typed = `${(window as Window & { __secretInput?: string }).__secretInput ?? ''}${key}`.slice(-20);
+      (window as Window & { __secretInput?: string }).__secretInput = typed;
+      if (typed.includes('cyberbadge')) {
+        unlockBadge();
+      }
+
+      if (event.key === 'Escape') {
+        setCommandOpen(false);
+        setTerminalOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    const onMove = (event: MouseEvent) => {
+      const target = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement | null;
+      const actionTarget = target?.closest('[data-cursor],a,button');
+      let label = 'SCAN';
+      if (actionTarget instanceof HTMLElement) {
+        label = actionTarget.dataset.cursor
+          || (actionTarget.tagName === 'A' ? 'OPEN' : 'EXEC');
+      }
+      setCursorLabel({
+        x: event.clientX,
+        y: event.clientY,
+        label,
+        visible: Boolean(actionTarget),
+      });
+    };
+    window.addEventListener('mousemove', onMove);
+    return () => window.removeEventListener('mousemove', onMove);
+  }, []);
+
+  const handleMissionOpen = (idx: number) => {
+    setMissionsVisited((prev) => {
+      if (prev.includes(idx)) return prev;
+      playUiBeep(660);
+      setProfileXP((xp) => xp + 14);
+      return [...prev, idx];
+    });
+  };
+
+  const handleSoundToggle = () => {
+    if (soundLocked) return;
+    setSoundMuted((prev) => !prev);
+  };
+
+  const unlockBadge = () => {
+    if (easterEggUnlocked) return;
+    setEasterEggUnlocked(true);
+    setProfileXP((xp) => xp + 40);
+    setBadgeToast(true);
+    window.setTimeout(() => setBadgeToast(false), 2200);
+    playUiBeep(880);
+  };
 
   return (
     <div className="scanline-overlay grid-bg">
+      <div className="parallax-layer stars" />
+      <div className="parallax-layer circuits" />
+      <div className="parallax-layer sweep" />
       {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
 
       {!loading && (
@@ -920,7 +1608,28 @@ function App() {
           <ErrorBoundary>
             <Scene3DComponent />
           </ErrorBoundary>
+          <PlayerHUD
+            xp={profileXP}
+            level={level}
+            rank={rank}
+            questsCompleted={unlockedSections.length + missionsVisited.length}
+            activeMission={activeMission}
+            soundMuted={soundMuted}
+            soundLocked={soundLocked}
+            onToggleSound={handleSoundToggle}
+            easterEggUnlocked={easterEggUnlocked}
+            onOpenTerminal={() => setTerminalOpen(true)}
+          />
           <Navbar />
+          <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
+          <HiddenTerminal open={terminalOpen} onClose={() => setTerminalOpen(false)} onUnlock={unlockBadge} unlocked={easterEggUnlocked} />
+          <div
+            className={`cursor-status ${cursorLabel.visible ? 'visible' : ''}`}
+            style={{ left: cursorLabel.x + 16, top: cursorLabel.y + 16 }}
+          >
+            {cursorLabel.label}
+          </div>
+          {badgeToast && <div className="badge-toast">Achievement Unlocked: GHOST_PROTOCOL</div>}
           <AnimatePresence>
             <motion.main
               className="relative z-10"
@@ -931,13 +1640,15 @@ function App() {
               <HeroSection />
               <AboutSection />
               <SkillsSection />
-              <ExperienceSection />
-              <ProjectsSection />
+              <ExperienceSection onMissionOpen={handleMissionOpen} />
+              <ProjectsSection
+                unlocked={unlockedSections.includes('experience') || missionsVisited.length >= 1}
+              />
               <CertificationsSection />
               <ContactSection />
             </motion.main>
           </AnimatePresence>
-          <Footer />
+          <Footer unlockedBadge={easterEggUnlocked} />
         </>
       )}
     </div>
